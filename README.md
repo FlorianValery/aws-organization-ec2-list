@@ -24,6 +24,10 @@ arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess
 ```
 
 ## Usage
+* Clone the repo locally
+```
+git clone https://github.com/FlorianValery/aws-organization-ec2-list.git
+```
 * Update the config/default.json file with the proper region and cross-accounts role that your user can assume
 ```
 {
