@@ -1,4 +1,5 @@
 // Cross account logic, forked from https://maori.geek.nz/assuming-roles-in-aws-with-go-aeeb28fab418
+
 package main
 
 import (
@@ -25,6 +26,7 @@ func (c Clients) Session() *session.Session {
 	return sess
 }
 
+// Custom config func
 func (c Clients) Config(
 	region *string,
 	account_id *string,
@@ -60,6 +62,7 @@ func (c Clients) Config(
 	return config
 }
 
+// Create EC2 client
 func (c *Clients) EC2(
 	region string,
 	account_id string,
