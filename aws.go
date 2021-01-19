@@ -55,7 +55,7 @@ func getAccountEc2(config config.Config, accountName string, accountID string, r
 				// Retrieve account information
 				result[key] = append(result[key], accountName)
 				result[key] = append(result[key], accountID)
-				// Check if the instance name is set using tags, otherwise use default
+				// Check if the instance name is set using tags, otherwise use default null name
 				for _, tag := range instance.Tags {
 					if *tag.Key == "Name" {
 						result[key] = append(result[key], *tag.Value)
@@ -65,7 +65,7 @@ func getAccountEc2(config config.Config, accountName string, accountID string, r
 				if len(result) == 2 {
 					result[key] = append(result[key], "N/A")
 				}
-				// Retrieve instance information, use default is potentially null
+				// Retrieve instance information, some use default values  if potentially null
 				result[key] = append(result[key], *instance.InstanceType)
 				result[key] = append(result[key], *instance.InstanceId)
 				result[key] = append(result[key], *instance.ImageId)
