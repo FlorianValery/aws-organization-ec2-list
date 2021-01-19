@@ -32,11 +32,12 @@ arn:aws:iam::aws:policy/AWSOrganizationsReadOnlyAccess
 ```
 git clone https://github.com/FlorianValery/aws-organization-ec2-list.git
 ```
-* Update the config/default.json file with the proper region and cross-accounts role that your user can assume
+* Update the config/default.json file with the proper region, master account ID and cross-accounts role that your user can assume
 ```
 {
   "Region": "us-east-1",
-  "Organization_Role": "OrganizationEc2ReadRole"
+  "OrganizationRole": "OrganizationEc2ReadRole",
+  "MasterAccountID": "000000000000"
 }
 ```
 * Export your AWS credentials using the CLI or tools like Awsume

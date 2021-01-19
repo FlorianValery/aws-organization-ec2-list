@@ -8,11 +8,14 @@ import (
 	"fmt"
 )
 
+// Config structure
 type Config struct {
 	Region string
-	Organization_Role string
+	OrganizationRole string
+	MasterAccountID string
 }
 
+// InitVariables based on json file
 func InitVariables(input ...string) Config {
 	configuration := Config{}
 	fileName := fmt.Sprintf("./config/default.json")

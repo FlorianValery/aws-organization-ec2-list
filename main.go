@@ -1,9 +1,9 @@
-// Main cal
+// Main file
 
 package main
 
 import (
-	"./config"
+	"./config" // Import config file
 	"fmt"
 )
 

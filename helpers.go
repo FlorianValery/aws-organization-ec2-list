@@ -1,6 +1,5 @@
 // Helper functions
 // Includes handling error logic
-
 package main
 
 import (
@@ -10,7 +9,7 @@ import (
 	"os"
 )
 
-// Function that log error if not null
+// Function that log errors if not null
 func checkError(message string, err error) {
 	if err != nil {
 		log.Fatal(message, err)

@@ -1,59 +1,53 @@
 // aws.go includes all the functions that make AWS API calls
-
 package main
 
 import (
 	"./config"
 	"fmt"
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ec2"
 	"github.com/aws/aws-sdk-go/service/organizations"
 )
 
+// Retrieve all accounts within organization
 func getOrganizationAccounts(config config.Config) map[string]string {
-	// Start AWS session
-	sess, err := session.NewSession(&aws.Config{
-		Region: aws.String(config.Region)},
-	)
-	checkError("Could not start session", err)
 	// Create organization service client
-	c := organizations.New(sess)
+	var c Clients
+	svc := c.Organization(config.Region, config.MasterAccountID, config.OrganizationRole)
 	// Create variable for the list of accounts and initialize input
-	listOrganizationAccounts := make(map[string]string)
-
+	organizationAccounts := make(map[string]string)
 	input := &organizations.ListAccountsInput{}
 	// Start a do-while loop
 	for {
 		// Retrieve the accounts with a limit of 20 per call
-		listOrganizationPaginated, err := c.ListAccounts(input)
+		organizationAccountsPaginated, err := svc.ListAccounts(input)
 		// Append the accounts from the current call to the total list
-		for _, account := range listOrganizationPaginated.Accounts {
-			listOrganizationAccounts[*account.Name] = *account.Id
+		for _, account := range organizationAccountsPaginated.Accounts {
+			organizationAccounts[*account.Name] = *account.Id
 		}
 		checkError("Could not retrieve account list", err)
-		// Check if more accounts need to be retrieved, otherwise break the loop
-		if listOrganizationPaginated.NextToken == nil {
+		// Check if more accounts need to be retrieved using api token, otherwise break the loop
+		if organizationAccountsPaginated.NextToken == nil {
 			break
 		} else {
-			input = &organizations.ListAccountsInput{NextToken: listOrganizationPaginated.NextToken}
+			input = &organizations.ListAccountsInput{NextToken: organizationAccountsPaginated.NextToken}
 		}
 	}
-	return listOrganizationAccounts
+	return organizationAccounts
 }
 
+// Retrieve all ec2 instances and their attributes within an account
 func getAccountEc2(config config.Config, accountName string, accountID string, result map[string][]string) map[string][]string {
 	// Create EC2 service client
 	var c Clients
-	svc := c.EC2(config.Region, accountID, config.Organization_Role)
+	svc := c.EC2(config.Region, accountID, config.OrganizationRole)
 	// Get the EC2 list of the given account
 	input := &ec2.DescribeInstancesInput{}
-	listInstances, err := svc.DescribeInstances(input)
+	instances, err := svc.DescribeInstances(input)
 	checkError("Could not retrieve the EC2s", err)
 
 	// Iterate over the EC2 instances and add elements to global list, if instances > 0
-	if len(listInstances.Reservations) != 0 {
-		for _, reservation := range listInstances.Reservations {
+	if len(instances.Reservations) != 0 {
+		for _, reservation := range instances.Reservations {
 			// Loop through every individual EC2 instance
 			for _, instance := range reservation.Instances {
 				// Set the map key using the unique instance ID
