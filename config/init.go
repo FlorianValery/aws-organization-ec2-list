@@ -20,4 +20,3 @@ func InitVariables(input ...string) Config {
 
 	return configuration
 }
-

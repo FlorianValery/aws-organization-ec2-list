@@ -10,13 +10,13 @@ import (
 	"github.com/aws/aws-sdk-go/service/ec2"
 )
 
-// Struct to store the session with custom parameters
+// Clients Struct to store the session with custom parameters
 type Clients struct {
 	session *session.Session
 	configs map[string]*aws.Config
 }
 
-// Func to start a session
+// Session Func to start a session
 func (c Clients) Session() *session.Session {
 	if c.session != nil {
 		return c.session
@@ -26,19 +26,19 @@ func (c Clients) Session() *session.Session {
 	return sess
 }
 
-// Custom config func
+// Config custom func
 func (c Clients) Config(
 	region *string,
-	account_id *string,
+	accountID *string,
 	role *string) *aws.Config {
 
 	// return no config for nil inputs
-	if account_id == nil || region == nil || role == nil {
+	if accountID == nil || region == nil || role == nil {
 		return nil
 	}
 	arn := fmt.Sprintf(
 		"arn:aws:iam::%v:role/%v",
-		*account_id,
+		*accountID,
 		*role,
 	)
 	// include region in cache key otherwise concurrency errors
@@ -62,10 +62,10 @@ func (c Clients) Config(
 	return config
 }
 
-// Create EC2 client
+// EC2 Create client
 func (c *Clients) EC2(
 	region string,
-	account_id string,
+	accountID string,
 	role string) *ec2.EC2 {
-	return ec2.New(c.Session(), c.Config(&region, &account_id, &role))
+	return ec2.New(c.Session(), c.Config(&region, &accountID, &role))
 }
