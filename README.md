@@ -50,7 +50,7 @@ go build -o app
 ./app
 ```
 
-**Output example**
+**Output example in a csv file**
 ```
 Account Name,Account ID,Instance Name,Instance Size,Instance ID,Image ID,Platform,Private IP,State,Timestamp
 account-prod,000000000000,awesome_app,t3.micro,i-00000000000000aa,ami-000000000000aa,linux,10.0.0.1,running,2021-01-18 00:00:00 +0000 UTC
@@ -58,3 +58,5 @@ account-prod,000000000000,awesome_app,t3.micro,i-11111111111111bb,ami-1111111111
 account-staging,111111111111,awesome_db,t3.micro,i-11111111111111cc,ami-11111111111111cc,linux,10.10.0.1,running,2021-01-18 00:00:00 +0000 UTC
 [...]
 ```
+
+This repo is used as the source code for [this](https://lebureau.dev/listing-all-ec2-instances-within-an-aws-organization/) complete guide
