@@ -22,6 +22,10 @@ arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess
     ]
 }
 ```
+Additionally, this same role will need organization permissions in the master Organization account, so we are able to automatically retrieve all the accounts IDs within our Org. This will be useful as our organization might grow in the future. You can use the AWS managed policy:
+```
+arn:aws:iam::aws:policy/AWSOrganizationsReadOnlyAccess
+```
 
 ## Usage
 * Clone the repo locally
