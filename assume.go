@@ -1,5 +1,4 @@
 // Cross account logic, forked from https://maori.geek.nz/assuming-roles-in-aws-with-go-aeeb28fab418
-
 package main
 
 import (
@@ -8,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/credentials/stscreds"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ec2"
+	"github.com/aws/aws-sdk-go/service/organizations"
 )
 
 // Clients Struct to store the session with custom parameters
@@ -60,6 +60,14 @@ func (c Clients) Config(
 	}
 	c.configs[key] = config
 	return config
+}
+
+// Organization Create client
+func (c *Clients) Organization(
+	region string,
+	accountID string,
+	role string) *organizations.Organizations {
+	return organizations.New(c.Session(), c.Config(&region, &accountID, &role))
 }
 
 // EC2 Create client
