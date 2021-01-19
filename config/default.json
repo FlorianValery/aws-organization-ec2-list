@@ -1,4 +1,5 @@
 {
-  "Region": "",
-  "Organization_Role": ""
+  "region": "",
+  "organizationRole": "",
+  "masterAccountID": ""
 }
